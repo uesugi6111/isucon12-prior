@@ -126,7 +126,7 @@ class App < Sinatra::Base
 
       id = tx.query("SELECT count(id) as count FROM `schedules`" ).first[:count] +1
       tx.xquery('INSERT INTO `schedules` ( id,`title`, `capacity`, `created_at`) VALUES (?,?, ?, ?)', id, title, capacity,d)
-      created_at = tx.xquery('SELECT `created_at` FROM `reservations` WHERE `id` = ?', id).first[:created_at]
+      created_at = tx.xquery('SELECT `created_at` FROM `schedules` WHERE `id` = ?', id).first[:created_at]
 
 
       json({ id: id.to_s, title: title, capacity: capacity, created_at: created_at })
