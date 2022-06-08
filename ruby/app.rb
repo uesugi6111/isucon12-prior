@@ -3,6 +3,7 @@ require 'active_support'
 require 'active_support/json'
 require 'active_support/time'
 require_relative 'db'
+require "date"
 
 Time.zone = 'UTC'
 
@@ -123,11 +124,13 @@ class App < Sinatra::Base
     transaction do |tx|
       title = params[:title].to_s
       capacity = params[:capacity].to_i
+      d = Date.today.strftime("%Y-%m-%d %H:%M:%S.000")
 
-      tx.xquery('INSERT INTO `schedules` ( `title`, `capacity`, `created_at`) VALUES (?, ?, NOW(6))', title, capacity)
-      created_at = tx.xquery('SELECT `created_at` FROM `schedules` WHERE `id` = ?', id).first[:created_at]
 
-      json({ id: id, title: title, capacity: capacity, created_at: created_at })
+      tx.xquery('INSERT INTO `schedules` ( `title`, `capacity`, `created_at`) VALUES (?, ?, ?)', title, capacity,d)
+     
+
+      json({ id: id.to_s, title: title, capacity: capacity, created_at: d })
     end
   end
 
