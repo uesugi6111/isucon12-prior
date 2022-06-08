@@ -126,10 +126,10 @@ class App < Sinatra::Base
 
       id = tx.query("SELECT count(id) as count FROM `schedules`" ).first[:count] +1
       tx.xquery('INSERT INTO `schedules` ( id,`title`, `capacity`, `created_at`) VALUES (?,?, ?, ?)', id, title, capacity,d)
+      created_at = tx.xquery('SELECT `created_at` FROM `reservations` WHERE `id` = ?', id).first[:created_at]
 
 
-
-      json({ id: id.to_s, title: title, capacity: capacity, created_at: d })
+      json({ id: id.to_s, title: title, capacity: capacity, created_at: created_at })
     end
   end
 
@@ -137,8 +137,8 @@ class App < Sinatra::Base
     required_login!
 
     transaction do |tx|
-      schedule_id = params[:schedule_id].to_s
-      user_id = current_user[:id]
+      schedule_id = params[:schedule_id].to_i
+      user_id = current_user[:id].to_i
 
       halt(403, JSON.generate(error: 'schedule not found')) if tx.xquery('SELECT 1 FROM `schedules` WHERE `id` = ? LIMIT 1 FOR UPDATE', schedule_id).first.nil?
       halt(403, JSON.generate(error: 'user not found')) unless tx.xquery('SELECT 1 FROM `users` WHERE `id` = ? LIMIT 1', user_id).first
