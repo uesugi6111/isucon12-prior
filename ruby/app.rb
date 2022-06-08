@@ -27,7 +27,7 @@ class App < Sinatra::Base
 
     def generate_id(table, tx)
       
-       tx.xquery("SELECT count(*) FROM `#{table}`" ).first +1
+       tx.xquery("SELECT count(id) FROM `#{table}`" ).first +1
        
     end
 
@@ -124,7 +124,7 @@ class App < Sinatra::Base
       capacity = params[:capacity].to_i
       d = DateTime.now.strftime("%Y-%m-%d %H:%M:%S.000000")
 
-      id = generate_id('schedules', tx)
+      id = tx.query("SELECT count(id) FROM schedules" ).first +1
       tx.xquery('INSERT INTO `schedules` ( id,`title`, `capacity`, `created_at`) VALUES (?,?, ?, ?)', id, title, capacity,d)
 
 
