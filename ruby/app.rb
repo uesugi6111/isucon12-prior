@@ -92,11 +92,10 @@ class App < Sinatra::Base
     nickname = ''
 
     user = transaction do |tx|
-      id = generate_id('users', tx)
       email = params[:email]
       nickname = params[:nickname]
-      tx.xquery('INSERT INTO `users` (`id`, `email`, `nickname`, `created_at`) VALUES (?, ?, ?, NOW(6))', id, email, nickname)
-      created_at = tx.xquery('SELECT `created_at` FROM `users` WHERE `id` = ? LIMIT 1', id).first[:created_at]
+      tx.xquery('INSERT INTO `users` (`email`, `nickname`, `created_at`) VALUES (?, ?, NOW(6))', email, nickname)
+      created_at = tx.xquery('SELECT `created_at` FROM `users` WHERE `email` = ? ', email).first[:created_at]
 
       { id: id, email: email, nickname: nickname, created_at: created_at }
     end
@@ -107,7 +106,7 @@ class App < Sinatra::Base
   post '/api/login' do
     email = params[:email]
 
-    user = db.xquery('SELECT `id`, `nickname` FROM `users` WHERE `email` = ? LIMIT 1', email).first
+    user = db.xquery('SELECT `id`, `nickname` FROM `users` WHERE `email` = ? ', email).first
 
     if user
       session[:user_id] = user[:id]
