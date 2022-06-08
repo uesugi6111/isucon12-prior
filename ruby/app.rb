@@ -46,6 +46,7 @@ class App < Sinatra::Base
     def get_reservations(schedule)
       reservations = db.xquery('SELECT * FROM `reservations` WHERE `schedule_id` = ?', schedule[:id]).map do |reservation|
         reservation[:user] = get_user(reservation[:user_id])
+        reservation[:id] = reservation[:id].to_s
         reservation
       end
       schedule[:id] = schedule[:id].to_s
@@ -61,6 +62,7 @@ class App < Sinatra::Base
     def get_user(id)
       user = db.xquery('SELECT * FROM `users` WHERE `id` = ?', id).first
       user[:email] = '' if !current_user || !current_user[:staff]
+      user[:id]  = user[:id].to_s
       user
     end
   end
