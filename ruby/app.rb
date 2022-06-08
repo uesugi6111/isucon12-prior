@@ -59,7 +59,7 @@ class App < Sinatra::Base
     end
 
     def get_user(id)
-      user = db.xquery('SELECT * FROM `users` WHERE `id` = ? LIMIT 1', id).first
+      user = db.xquery('SELECT * FROM `users` WHERE `id` = ?', id).first
       user[:email] = '' if !current_user || !current_user[:staff]
       user
     end
@@ -119,7 +119,7 @@ class App < Sinatra::Base
     end
   end
 
-  post '/api/schedules' do
+  post '/api/schedules' do 
     required_staff_login!
 
     transaction do |tx|
