@@ -110,7 +110,7 @@ class App < Sinatra::Base
 
     if user
       session[:user_id] = user[:id]
-      json({ id: current_user[:id], email: current_user[:email], nickname: current_user[:nickname], created_at: current_user[:created_at] })
+      json({ id: current_user[:id].to_s, email: current_user[:email], nickname: current_user[:nickname], created_at: current_user[:created_at] })
     else
       session[:user_id] = nil
       halt 403, JSON.generate({ error: 'login failed' })
