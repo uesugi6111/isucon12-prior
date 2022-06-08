@@ -155,12 +155,12 @@ class App < Sinatra::Base
       tx.xquery('INSERT INTO `reservations` (`schedule_id`, `user_id`, `created_at`) VALUES (?, ?, NOW(6))', schedule_id, user_id)
       created_at = tx.xquery('SELECT `created_at` FROM `reservations` WHERE `id` = ?', id).first[:created_at]
 
-      json({ id: id, schedule_id: schedule_id, user_id: user_id, created_at: created_at})
+      json({ id: id.to_s, schedule_id: schedule_id, user_id: user_id, created_at: created_at})
     end
   end
 
   get '/api/schedules' do
-    schedules = db.xquery('SELECT * FROM `schedules` ORDER BY `id` DESC');
+    schedules = db.xquery('SELECT CAST(id AS CHAR) as id,title,capacity,created_at FROM `schedules` ORDER BY `id` DESC');
     schedules.each do |schedule|
       get_reservations_count(schedule)
     end
