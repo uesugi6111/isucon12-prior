@@ -124,7 +124,7 @@ class App < Sinatra::Base
     transaction do |tx|
       title = params[:title].to_s
       capacity = params[:capacity].to_i
-      d = Date.today.strftime("%Y-%m-%d %H:%M:%S.000")
+      d = Date.today.strftime("%Y-%m-%d %H:%M:%S.000000")
 
 
       tx.xquery('INSERT INTO `schedules` ( `title`, `capacity`, `created_at`) VALUES (?, ?, ?)', title, capacity,d)
