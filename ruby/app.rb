@@ -124,7 +124,7 @@ class App < Sinatra::Base
       capacity = params[:capacity].to_i
       d = DateTime.now.strftime("%Y-%m-%d %H:%M:%S.000000")
 
-      id = tx.query("SELECT `count(id)` FROM `schedules`" ).first +1
+      id = tx.query("SELECT count(id) as count FROM `schedules`" ).first[:count] +1
       tx.xquery('INSERT INTO `schedules` ( id,`title`, `capacity`, `created_at`) VALUES (?,?, ?, ?)', id, title, capacity,d)
 
 
