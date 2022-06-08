@@ -124,9 +124,9 @@ class App < Sinatra::Base
       capacity = params[:capacity].to_i
       d = DateTime.now.strftime("%Y-%m-%d %H:%M:%S.000000")
 
-
-      tx.xquery('INSERT INTO `schedules` ( id,`title`, `capacity`, `created_at`) VALUES (?,?, ?, ?)', id, title, capacity,d)
       id = generate_id('schedules', tx)
+      tx.xquery('INSERT INTO `schedules` ( id,`title`, `capacity`, `created_at`) VALUES (?,?, ?, ?)', id, title, capacity,d)
+
 
 
       json({ id: id.to_s, title: title, capacity: capacity, created_at: d })
