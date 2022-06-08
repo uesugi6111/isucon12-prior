@@ -47,6 +47,8 @@ class App < Sinatra::Base
       reservations = db.xquery('SELECT * FROM `reservations` WHERE `schedule_id` = ?', schedule[:id]).map do |reservation|
         reservation[:user] = get_user(reservation[:user_id])
         reservation[:id] = reservation[:id].to_s
+        reservation[:schedule_id] = reservation[:schedule_id].to_s
+        reservation[:user_id] = reservation[:user_id].to_s
         reservation
       end
       schedule[:id] = schedule[:id].to_s
