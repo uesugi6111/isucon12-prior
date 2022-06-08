@@ -26,11 +26,9 @@ class App < Sinatra::Base
     end
 
     def generate_id(table, tx)
-      id = ULID.generate
-      while tx.xquery("SELECT 1 FROM `#{table}` WHERE `id` = ? LIMIT 1", id).first
-        id = ULID.generate
-      end
-      id
+      
+       tx.xquery("SELECT count(*) FROM `#{table}`" ).first +1
+       
     end
 
     def required_login!
@@ -124,11 +122,12 @@ class App < Sinatra::Base
     transaction do |tx|
       title = params[:title].to_s
       capacity = params[:capacity].to_i
-      d = Date.today.strftime("%Y-%m-%d %H:%M:%S.000000")
+      d = DateTime.now.strftime("%Y-%m-%d %H:%M:%S.000000")
 
 
-      tx.xquery('INSERT INTO `schedules` ( `title`, `capacity`, `created_at`) VALUES (?, ?, ?)', title, capacity,d)
-     
+      tx.xquery('INSERT INTO `schedules` ( id,`title`, `capacity`, `created_at`) VALUES (?,?, ?, ?)', id, title, capacity,d)
+      id = generate_id('schedules', tx)
+
 
       json({ id: id.to_s, title: title, capacity: capacity, created_at: d })
     end

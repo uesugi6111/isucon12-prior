@@ -11,7 +11,7 @@ CREATE TABLE `users` (
 
 DROP TABLE IF EXISTS `schedules`;
 CREATE TABLE `schedules` (
-  `id`         int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `id`         int PRIMARY KEY NOT NULL,
   `title`      VARCHAR(255) NOT NULL DEFAULT '',
   `capacity`   INT UNSIGNED NOT NULL DEFAULT 0,
   `created_at` DATETIME(6) NOT NULL
