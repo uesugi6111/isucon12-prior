@@ -94,7 +94,7 @@ class App < Sinatra::Base
       email = params[:email]
       nickname = params[:nickname]
       tx.xquery('INSERT INTO `users` (`email`, `nickname`, `created_at`) VALUES (?, ?, NOW(6))', email, nickname)
-      a =  tx.xquery('SELECT `created_at` FROM `users` WHERE `email` = ? ', email)
+      a =  tx.xquery('SELECT id,`created_at` FROM `users` WHERE `email` = ? ', email)
 created_at =a.first[:created_at]
 id = a.first[:id]
       { id: id.to_s, email: email, nickname: nickname, created_at: created_at }
