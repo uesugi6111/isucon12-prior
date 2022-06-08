@@ -154,7 +154,7 @@ id = a.first[:id]
 
       halt(403, JSON.generate(error: 'capacity is already full')) if reserved >= capacity
       id = tx.query("SELECT count(id) as count FROM `reservations`" ).first[:count] +1
-      tx.xquery('INSERT INTO `reservations` (`schedule_id`, `user_id`, `created_at`) VALUES (?, ?, NOW(6))', schedule_id, user_id)
+      tx.xquery('INSERT INTO `reservations` (id,`schedule_id`, `user_id`, `created_at`) VALUES (?,?, ?, NOW(6))',id, schedule_id, user_id)
       created_at = tx.xquery('SELECT `created_at` FROM `reservations` WHERE `id` = ?', id).first[:created_at]
 
       json({ id: id.to_s, schedule_id: schedule_id, user_id: user_id, created_at: created_at})

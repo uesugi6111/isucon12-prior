@@ -19,7 +19,7 @@ CREATE TABLE `schedules` (
 
 DROP TABLE IF EXISTS `reservations`;
 CREATE TABLE `reservations` (
-  `id`          int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `id`          int PRIMARY KEY NOT NULL ,
   `schedule_id` int NOT NULL,
   `user_id`     int NOT NULL,
   `created_at`  DATETIME(6) NOT NULL,
